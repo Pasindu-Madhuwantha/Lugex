@@ -1,0 +1,16 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const sequelize = require('./config/db');
+const gameRoutes = require('./routes/gameRoutes');
+const Game = require('./models/Game');
+
+const app = express();
+app.use(bodyParser.json());
+app.use('/games', gameRoutes);
+
+sequelize.sync().then(() => {
+  console.log('Database connected and synced.');
+  app.listen(3000, () => {
+    console.log('Game Service running on http://localhost:3000');
+  });
+});
