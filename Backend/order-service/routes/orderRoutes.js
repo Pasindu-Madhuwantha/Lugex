@@ -14,7 +14,7 @@ router.post('/add', async (req, res) => {
     const enrichedItems = [];
 
     for (let item of items) {
-      const response = await axios.get(`http://localhost:3000/games/${item.gameId}`);
+      const response = await axios.get(`http://game-service:3000/games/${item.gameId}`);
       const game = response.data;
 
       if (!game || !game.price) {
@@ -67,7 +67,7 @@ router.put('/edit/:id', async (req, res) => {
     const enrichedItems = [];
 
     for (let item of items) {
-      const response = await axios.get(`http://localhost:3000/games/${item.gameId}`);
+      const response = await axios.get(`http://game-service:3000/games/${item.gameId}`);
       const game = response.data;
 
       if (!game || !game.price) {

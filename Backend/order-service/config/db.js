@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('lugx_games', 'postgres', 'postgres', {
-  host: 'localhost',
+  host: 'postgres',
   dialect: 'postgres',
 });
 

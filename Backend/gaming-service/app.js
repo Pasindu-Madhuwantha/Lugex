@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/db');
 const gameRoutes = require('./routes/gameRoutes');
-const Game = require('./models/Game');
+const Game = require('./models/game');
 
 const app = express();
 app.use(bodyParser.json());

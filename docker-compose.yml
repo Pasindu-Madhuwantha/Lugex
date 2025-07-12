@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lugx_games
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - lugx-net
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    ports:
+      - "8123:8123"  # HTTP interface
+      - "9000:9000"  # Native client port
+      - "9009:9009"  # Optional: monitoring/metrics
+    environment:
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: secret
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+    - lugx-net
+  game-service:
+    build:
+      context: ./Backend/gaming-service
+    container_name: game-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: on-failure  # ✅ Auto-restart on failure
+    networks:
+      - lugx-net
+
+  order-service:
+    build:
+      context: ./Backend/order-service
+    container_name: order-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    restart: on-failure  # ✅ Auto-restart on failure
+    networks:
+      - lugx-net
+
+  analytics-service:
+    build:
+      context: ./Backend/analytics-service
+    container_name: analytics-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - clickhouse
+    networks:
+      - lugx-net
+
+  frontend:
+    image: nginx:alpine
+    container_name: lugx-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - analytics-service
+    networks:
+      - lugx-net
+
+volumes:
+  pgdata:
+  clickhouse_data:
+
+networks:
+  lugx-net:
