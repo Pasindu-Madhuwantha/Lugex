@@ -1,18 +1,11 @@
-# Dockerfile for Game Service
-FROM node:18
+FROM node:18-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install --production
 
-# Copy the source code
 COPY . .
 
-# Expose port
-EXPOSE 3001
-
-# Start the service
+EXPOSE 3000
 CMD ["npm", "start"]

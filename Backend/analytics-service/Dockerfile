@@ -1,18 +1,11 @@
-# Dockerfile for Analytics Service
-FROM node:18
+FROM node:18-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy dependency definitions
 COPY package*.json ./
-RUN npm install
+RUN npm install --production
 
-# Copy service code
 COPY . .
 
-# Expose the service port
 EXPOSE 3002
-
-# Start the service
 CMD ["npm", "start"]

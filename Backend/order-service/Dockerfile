@@ -1,18 +1,11 @@
-# Dockerfile for Order Service
-FROM node:18
+FROM node:18-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Install app dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install --production
 
-# Copy the entire service code
 COPY . .
 
-# Expose the service port
-EXPOSE 3003
-
-# Start the order service
+EXPOSE 3001
 CMD ["npm", "start"]
