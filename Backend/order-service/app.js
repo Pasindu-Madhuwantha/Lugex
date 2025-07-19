@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use('/orders', orderRoutes);
 
 sequelize.sync().then(() => {
-  app.listen(3001, () => {
-    console.log('Order Service running at http://localhost:3001');
-  });
+  app.listen(3001, '0.0.0.0', () => {
+    console.log('Order Service running on port 3001');
+  });  
 });

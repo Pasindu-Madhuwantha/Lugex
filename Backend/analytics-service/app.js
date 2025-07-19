@@ -4,7 +4,11 @@ const cors = require('cors');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+}));
 
 // Setup ClickHouse connection
 const clickhouse = new ClickHouse({
@@ -19,8 +23,7 @@ const clickhouse = new ClickHouse({
   format: "json",
 });
 
-  
-// API route to track events
+// Track event
 app.post('/track', async (req, res) => {
   const { eventType, page, timestamp, sessionId } = req.body;
 
@@ -34,12 +37,10 @@ app.post('/track', async (req, res) => {
   } catch (err) {
     console.error('ClickHouse insert error:', err);
     res.status(500).json({ error: 'Failed to track event' });
-    console.error('ClickHouse insert error:', err.response?.data || err.message || err);
-
   }
 });
 
 const PORT = 3002;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Analytics service running on port ${PORT}`);
 });
