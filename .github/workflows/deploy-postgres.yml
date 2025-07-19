@@ -30,7 +30,7 @@ jobs:
 
       - name: Update kubeconfig for EKS cluster
         run: |
-          aws eks update-kubeconfig --name lugx-cluster --region us-east-1
+          aws eks update-kubeconfig --name lugex-cluster --region us-east-1
 
       - name: Deploy PostgreSQL
         run: |

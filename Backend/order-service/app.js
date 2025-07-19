@@ -14,3 +14,5 @@ sequelize.sync().then(() => {
     console.log('Order Service running on port 3001');
   });  
 });
+
+//test trigger
