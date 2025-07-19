@@ -1,0 +1,38 @@
+name: Deploy PostgreSQL
+
+on:
+  push:
+    paths:
+      - 'postgres-deployment.yaml'
+      - 'postgres-service.yaml'
+      - '.github/workflows/deploy-postgres.yml'
+
+jobs:
+  deploy:
+    name: Deploy PostgreSQL to EKS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Update kubeconfig for EKS cluster
+        run: |
+          aws eks update-kubeconfig --name lugx-cluster --region us-east-1
+
+      - name: Deploy PostgreSQL
+        run: |
+          kubectl apply -f postgres-deployment.yaml
+          kubectl apply -f postgres-service.yaml
