@@ -44,3 +44,5 @@ const PORT = 3002;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Analytics service running on port ${PORT}`);
 });
+
+//test rigger for ci/cd
