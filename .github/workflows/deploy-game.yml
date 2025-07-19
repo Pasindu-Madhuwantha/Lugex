@@ -1,17 +1,17 @@
-name: Deploy Analytics Service to EKS
+name: Deploy Game Service to EKS
 
 on:
   push:
     branches: [main]
     paths:
-      - 'Backend/analytics-service/**'
-      - 'analytics-deployment.yaml'
-      - 'analytics-service.yaml'
-      - '.github/workflows/deploy-analytics.yml'
+      - 'Backend/game-service/**'
+      - 'game-deployment.yaml'
+      - 'game-service.yaml'
+      - '.github/workflows/deploy-game.yml'
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPO: 851725513473.dkr.ecr.us-east-1.amazonaws.com/analytics-service
+  ECR_REPO: 851725513473.dkr.ecr.us-east-1.amazonaws.com/game-service
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -37,17 +37,15 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t $ECR_REPO:$IMAGE_TAG ./Backend/analytics-service
+          docker build -t $ECR_REPO:$IMAGE_TAG ./Backend/game-service
           docker push $ECR_REPO:$IMAGE_TAG
 
-      - name: Update image in deployment YAML
+      - name: Update deployment YAML
         run: |
-          sed -i "s|image: .*$|image: $ECR_REPO:$IMAGE_TAG|" analytics-deployment.yaml
+          sed -i "s|image: .*$|image: $ECR_REPO:$IMAGE_TAG|" game-deployment.yaml
 
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
 
       - name: Update kubeconfig
         run: |
@@ -55,5 +53,5 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          kubectl apply -f analytics-deployment.yaml
-          kubectl apply -f analytics-service.yaml
+          kubectl apply -f game-deployment.yaml
+          kubectl apply -f game-service.yaml

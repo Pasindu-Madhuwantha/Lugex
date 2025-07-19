@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: game-service
+  template:
+    metadata:
+      labels:
+        app: game-service
+    spec:
+      containers:
+        - name: game-service
+          image: 851725513473.dkr.ecr.us-east-1.amazonaws.com/game-service:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: POSTGRES_HOST
+              value: "postgres-service"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+            - name: POSTGRES_DB
+              value: "lugx_games"

@@ -1,0 +1,39 @@
+name: Deploy ClickHouse to EKS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'clickhouse-deployment.yaml'
+      - 'clickhouse-service.yaml'
+      - '.github/workflows/deploy-clickhouse.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name lugex-gaming
+
+      - name: Deploy ClickHouse
+        run: |
+          kubectl apply -f clickhouse-deployment.yaml
+          kubectl apply -f clickhouse-service.yaml
