@@ -37,7 +37,7 @@ jobs:
       
       - name: Inject analytics endpoint from secret
         run: |
-          sed -i "s|{{ANALYTICS_ENDPOINT}}|${{ secrets.ANALYTICS_ENDPOINT }}|g" Frontend/index.html
+          sed -i "s|{{ANALYTICS_ENDPOINT}}|${{ secrets.ANALYTICS_ENDPOINT }}|g" Frontend/assets/js/analytics.js
         
       - name: Build and push Docker image
         run: |
