@@ -34,7 +34,11 @@ jobs:
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
-
+      
+      - name: Inject analytics endpoint from secret
+        run: |
+          sed -i "s|{{ANALYTICS_ENDPOINT}}|${{ secrets.ANALYTICS_ENDPOINT }}|g" Frontend/index.html
+        
       - name: Build and push Docker image
         run: |
           docker build -t $ECR_REPO:$IMAGE_TAG ./Frontend
