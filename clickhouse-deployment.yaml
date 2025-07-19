@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clickhouse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: clickhouse/clickhouse-server:latest
+          ports:
+            - containerPort: 8123  # HTTP interface
+            - containerPort: 9000
+            - containerPort: 9009
+          env:
+            - name: CLICKHOUSE_USER
+              value: "admin"
+            - name: CLICKHOUSE_PASSWORD
+              value: "secret"
+          volumeMounts:
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
+      volumes:
+        - name: init-script
+          configMap:
+            name: clickhouse-init-sql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clickhouse-init-sql
+data:
+  init.sql: |
+    CREATE TABLE IF NOT EXISTS default.events (
+      eventType String,
+      page String,
+      timestamp DateTime,
+      sessionId String
+    ) ENGINE = MergeTree()
+    ORDER BY timestamp;
