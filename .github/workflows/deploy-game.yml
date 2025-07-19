@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t $ECR_REPO:$IMAGE_TAG ./Backend/game-service
+          docker build -t $ECR_REPO:$IMAGE_TAG ./Backend/gaming-service
           docker push $ECR_REPO:$IMAGE_TAG
 
       - name: Update deployment YAML
