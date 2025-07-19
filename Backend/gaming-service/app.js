@@ -14,5 +14,3 @@ sequelize.sync().then(() => {
     console.log('Game Service running on http://0.0.0.0:3000');
   });  
 });
-
-//test trigger
