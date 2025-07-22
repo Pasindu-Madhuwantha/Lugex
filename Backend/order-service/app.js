@@ -15,4 +15,4 @@ sequelize.sync().then(() => {
   });  
 });
 
-//test trigger
+// Deploy All
