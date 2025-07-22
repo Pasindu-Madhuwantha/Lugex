@@ -24,12 +24,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{game_base_url}}games/add",
+							"raw": "http://{{game_base_url}}/games/add",
 							"protocol": "http",
 							"host": [
-								"{{game_base_url}}games"
+								"{{game_base_url}}"
 							],
 							"path": [
+								"games",
 								"add"
 							]
 						}
@@ -61,7 +62,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://{{game_base_url}}/games/delete/4",
+							"raw": "http://{{game_base_url}}/games/delete/1",
 							"protocol": "http",
 							"host": [
 								"{{game_base_url}}"
@@ -69,7 +70,7 @@
 							"path": [
 								"games",
 								"delete",
-								"4"
+								"1"
 							]
 						}
 					},
@@ -224,14 +225,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://a5f5fbffebf594699b33a207b670bdcb-345169123.us-east-1.elb.amazonaws.com/track",
+							"raw": "http://{{analytics_base_url}}/track",
 							"protocol": "http",
 							"host": [
-								"a5f5fbffebf594699b33a207b670bdcb-345169123",
-								"us-east-1",
-								"elb",
-								"amazonaws",
-								"com"
+								"{{analytics_base_url}}"
 							],
 							"path": [
 								"track"
