@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "e9fd8278-921b-4858-b02a-df6518def71c",
+		"name": "integration-env",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25996376"
+	},
+	"item": [
+		{
+			"name": "Gaming Service",
+			"item": [
+				{
+					"name": "Add Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Elden Ring 2\",\r\n  \"category\": \"RPG\",\r\n  \"releaseDate\": \"2022-02-25\",\r\n  \"price\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{game_base_url}}games/add",
+							"protocol": "http",
+							"host": [
+								"{{game_base_url}}games"
+							],
+							"path": [
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{game_base_url}}/games/all",
+							"protocol": "http",
+							"host": [
+								"{{game_base_url}}"
+							],
+							"path": [
+								"games",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Data",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{game_base_url}}/games/delete/4",
+							"protocol": "http",
+							"host": [
+								"{{game_base_url}}"
+							],
+							"path": [
+								"games",
+								"delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Data",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Cyberpunk 2077\",\r\n  \"category\": \"RPG\",\r\n  \"releaseDate\": \"2020-12-10\",\r\n  \"price\": 300\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{game_base_url}}/games/edit",
+							"protocol": "http",
+							"host": [
+								"{{game_base_url}}"
+							],
+							"path": [
+								"games",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order Service",
+			"item": [
+				{
+					"name": "Add Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"customerName\": \"Edward Cullen\",\r\n  \"items\": [\r\n    { \"gameId\": 1, \"quantity\": 2 }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{order_base_url}}/orders/add",
+							"protocol": "http",
+							"host": [
+								"{{order_base_url}}"
+							],
+							"path": [
+								"orders",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{order_base_url}}/orders/all",
+							"protocol": "http",
+							"host": [
+								"{{order_base_url}}"
+							],
+							"path": [
+								"orders",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"customerName\": \"Edward Cullen - Updated\",\r\n  \"items\": [\r\n    { \"gameId\": 1, \"quantity\":4}\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{order_base_url}}/orders/edit/1",
+							"protocol": "http",
+							"host": [
+								"{{order_base_url}}"
+							],
+							"path": [
+								"orders",
+								"edit",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{order_base_url}}/orders/delete/1",
+							"protocol": "http",
+							"host": [
+								"{{order_base_url}}"
+							],
+							"path": [
+								"orders",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Analytics Service",
+			"item": [
+				{
+					"name": "Add Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"eventType\": \"page_view\",\r\n  \"page\": \"/home\",\r\n  \"timestamp\": \"2025-07-12 15:45:00\",\r\n  \"sessionId\": \"abc123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://a5f5fbffebf594699b33a207b670bdcb-345169123.us-east-1.elb.amazonaws.com/track",
+							"protocol": "http",
+							"host": [
+								"a5f5fbffebf594699b33a207b670bdcb-345169123",
+								"us-east-1",
+								"elb",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"track"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "game_base_url",
+			"value": "http://a0350e9df586249aebf608627bbe5a46-1272811195.us-east-1.elb.amazonaws.com",
+			"type": "default"
+		},
+		{
+			"key": "order_base_url",
+			"value": "aa8be697731db406096fb42303d49293-1701007086.us-east-1.elb.amazonaws.com",
+			"type": "default"
+		},
+		{
+			"key": "analytics_base_url",
+			"value": "a74688784bb8d441aa19b8c8e177465d-257859736.us-east-1.elb.amazonaws.com",
+			"type": "default"
+		}
+	]
+}
