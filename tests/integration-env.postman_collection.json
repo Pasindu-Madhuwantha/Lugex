@@ -243,10 +243,32 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "game_base_url",
-			"value": "http://a0350e9df586249aebf608627bbe5a46-1272811195.us-east-1.elb.amazonaws.com",
+			"value": "a0350e9df586249aebf608627bbe5a46-1272811195.us-east-1.elb.amazonaws.com",
 			"type": "default"
 		},
 		{
