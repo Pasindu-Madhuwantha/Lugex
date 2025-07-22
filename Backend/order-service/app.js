@@ -15,4 +15,3 @@ sequelize.sync().then(() => {
   });  
 });
 
-// Deploy All
