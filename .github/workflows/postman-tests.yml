@@ -37,9 +37,9 @@ jobs:
           ORDER_URL=$(kubectl get svc order-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
           ANALYTICS_URL=$(kubectl get svc analytics-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
-          echo "GAME_URL=http://$GAME_URL" >> $GITHUB_ENV
-          echo "ORDER_URL=http://$ORDER_URL" >> $GITHUB_ENV
-          echo "ANALYTICS_URL=http://$ANALYTICS_URL" >> $GITHUB_ENV
+          echo "GAME_URL=$GAME_URL" >> $GITHUB_ENV
+          echo "ORDER_URL=$ORDER_URL" >> $GITHUB_ENV
+          echo "ANALYTICS_URL=$ANALYTICS_URL" >> $GITHUB_ENV
 
       - name: Inject URLs into Postman environment file
         run: |
