@@ -1,13 +1,9 @@
-name: Run Postman Integration Tests
+name: Run Postman Integration Tests with Dynamic URLs
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - develop
   # schedule:
-  #   - cron: '0 2 * * *'
+  #   - cron: '0 2 * * *'  # Daily at 2 AM UTC (optional)
 
 jobs:
   run-postman-tests:
@@ -17,26 +13,49 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          node-version: '18'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: your-region-code # e.g., ap-south-1
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name your-cluster-name --region your-region-code
+
+      - name: Fetch LoadBalancer URLs
+        id: urls
+        run: |
+          GAME_URL=$(kubectl get svc game-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          ORDER_URL=$(kubectl get svc order-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+          echo "GAME_URL=https://$GAME_URL" >> $GITHUB_ENV
+          echo "ORDER_URL=https://$ORDER_URL" >> $GITHUB_ENV
+
+      - name: Inject URLs into Postman environment file
+        run: |
+          jq --arg game_base_url "$GAME_URL" \
+             --arg order_base_url "$ORDER_URL" \
+             '.values |= map(
+               if .key == "game_base_url" then .value = $game_base_url
+               else if .key == "order_base_url" then .value = $order_base_url
+               else . end end
+             )' tests/integration-env.postman_environment.json > tests/tmp-env.json
+
+          mv tests/tmp-env.json tests/integration-env.postman_environment.json
 
       - name: Install Newman
         run: npm install -g newman
 
-      - name: Replace environment variables dynamically
-        run: |
-          jq '.values |= map(
-            if .key == "game_base_url" then .value = "${{ secrets.GAME_BASE_URL }}" 
-            elif .key == "order_base_url" then .value = "${{ secrets.ORDER_BASE_URL }}"
-            elif .key == "analytics_base_url" then .value = "${{ secrets.ANALYTICS_BASE_URL }}"
-            else . end
-          )' tests/integration-env.postman_environment.json > tmp_env.json
-
-      - name: Run Postman Collection
+      - name: Run Postman collection
         run: |
           newman run tests/integration-env.postman_collection.json \
-            --environment tmp_env.json \
+            --environment tests/integration-env.postman_environment.json \
             --reporters cli,json \
             --reporter-json-export newman-report.json
