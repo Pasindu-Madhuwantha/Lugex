@@ -1,13 +1,13 @@
 name: Run Postman Integration Tests
 
 on:
-  workflow_dispatch: # Allows manual triggering in the GitHub UI
+  workflow_dispatch:
   push:
     branches:
-      - main     # Run automatically when code is pushed to 'main'
-      - develop  # Run automatically when code is pushed to 'develop'
+      - main
+      - develop
   # schedule:
-  #   - cron: '0 2 * * *' # Optional: Run daily at 2 AM UTC
+  #   - cron: '0 2 * * *'
 
 jobs:
   run-postman-tests:
@@ -25,9 +25,18 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
+      - name: Replace environment variables dynamically
+        run: |
+          jq '.values |= map(
+            if .key == "game_base_url" then .value = "${{ secrets.GAME_BASE_URL }}" 
+            elif .key == "order_base_url" then .value = "${{ secrets.ORDER_BASE_URL }}"
+            elif .key == "analytics_base_url" then .value = "${{ secrets.ANALYTICS_BASE_URL }}"
+            else . end
+          )' tests/integration-env.postman_environment.json > tmp_env.json
+
       - name: Run Postman Collection
         run: |
           newman run tests/integration-env.postman_collection.json \
-            --environment tests/integration-env.postman_environment.json \
+            --environment tmp_env.json \
             --reporters cli,json \
             --reporter-json-export newman-report.json
