@@ -48,7 +48,7 @@ jobs:
         id: analytics-url
         run: |
           ANALYTICS_URL=$(kubectl get svc analytics-service -n default -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-          echo "ANALYTICS_URL=http://$ANALYTICS_URL" >> $GITHUB_ENV
+          echo "ANALYTICS_URL=http://$ANALYTICS_URL/track" >> $GITHUB_ENV
 
       - name: Inject analytics endpoint dynamically
         run: |
