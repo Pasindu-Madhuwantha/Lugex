@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Postman collection
         run: |
-          newman run tests/integration-tests.postman_collection.json \
+          newman run tests/integration-env.postman_collection.json \
             --environment tests/integration-env.postman_environment.json \
             --reporters cli,json \
             --reporter-json-export newman-report.json
