@@ -37,4 +37,4 @@ jobs:
         run: |
           kubectl apply -f clickhouse-deployment.yaml
           kubectl apply -f clickhouse-service.yaml
-# Trigger redeploy - Jul 22
+#trigger
