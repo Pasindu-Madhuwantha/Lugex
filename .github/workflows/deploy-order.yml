@@ -55,4 +55,3 @@ jobs:
         run: |
           kubectl apply -f order-service-deployment.yaml
           kubectl apply -f order-service.yaml
-#trigger

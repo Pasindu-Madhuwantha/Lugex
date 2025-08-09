@@ -36,4 +36,3 @@ jobs:
         run: |
           kubectl apply -f postgres-deployment.yaml
           kubectl apply -f postgres-service.yaml
-#trigger

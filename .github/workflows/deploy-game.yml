@@ -55,4 +55,3 @@ jobs:
         run: |
           kubectl apply -f game-service-deployment.yaml
           kubectl apply -f game-service.yaml
-#trigger
