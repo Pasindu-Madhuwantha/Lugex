@@ -37,3 +37,4 @@ jobs:
         run: |
           kubectl apply -f clickhouse-deployment.yaml
           kubectl apply -f clickhouse-service.yaml
+#trigger

@@ -57,3 +57,4 @@ jobs:
         run: |
           kubectl apply -f analytics-deployment.yaml
           kubectl apply -f analytics-service.yaml
+#trigger

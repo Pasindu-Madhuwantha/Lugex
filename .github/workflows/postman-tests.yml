@@ -63,3 +63,4 @@ jobs:
             --environment tests/integration-env.postman_environment.json \
             --reporters cli,json \
             --reporter-json-export newman-report.json
+#trigger
