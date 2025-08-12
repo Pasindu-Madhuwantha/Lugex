@@ -32,14 +32,14 @@ Note: The repo folder is `Frontend/` but the compose file mounts `./frontend`. R
 ```mermaid
 flowchart LR
   subgraph Browser
-    UI[Static Frontend (NGINX)]
+    UI[Frontend]
     JS[analytics.js]
   end
 
   subgraph Services
-    G[Game Service (Node/Express)]
-    O[Order Service (Node/Express)]
-    A[Analytics Service (Node/Express)]
+    G[Game Service]
+    O[Order Service]
+    A[Analytics Service]
   end
 
   subgraph Datastores
@@ -47,16 +47,13 @@ flowchart LR
     C[(ClickHouse)]
   end
 
-  UI -->|HTTP GET| UI
-  JS -->|POST /track| A
-  A -->|INSERT events| C
-
-  O -->|GET /games/:id| G
-  G <-->|CRUD Games| UI
-  O <-->|CRUD Orders| UI
-
-  G -->|Sequelize| P
-  O -->|Sequelize| P
+  UI --> G
+  UI --> O
+  JS --> A
+  A --> C
+  G --> P
+  O --> P
+  O --> G
 ```
 
 ---
